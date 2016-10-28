@@ -1,0 +1,22 @@
+{
+  "name": "Dynamic",
+  "version": "1.0.0",
+  "description": "dynamic hybrid solar panel simulation",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "jose.echavez92@gmail.com",
+  "dependencies": {
+    "bower": "^1.7.9",
+    "gulp": "^3.9.1",
+    "gulp-clean-css": "^2.0.13",
+    "gulp-concat": "^2.6.0",
+    "gulp-connect": "^5.0.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-sass": "^2.3.2",
+    "gulp-autoprefixer": "^3.1.1",
+    "gulp-uglify": "^2.0.0"
+  },
+  "license": "ISC"
+}

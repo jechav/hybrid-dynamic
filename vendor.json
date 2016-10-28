@@ -1,0 +1,4 @@
+[
+  "./vendor/jquery/dist/jquery.min.js",
+  "./vendor/bootstrap/dist/js/bootstrap.min.js"
+]
