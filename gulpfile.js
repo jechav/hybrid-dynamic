@@ -11,7 +11,9 @@ var paths = {
   sass: ['./src/**/**/*.scss' ],
   js: ['./src/app/**/**/*.js'],
   vendor: ['./vendor/**/*.js', './vendor.json'],
-  img : ['./src/assets/img/*']
+  img : ['./src/assets/img/*'],
+  html: ['./public/index.html']
+
 };
 
 /*
@@ -66,6 +68,11 @@ gulp.task('images', function() {
     .pipe(gulp.dest('./public/assets/img'));
 });
 
+gulp.task('html', function(){
+  gulp.src(paths.html)
+    .pipe(connect.reload());
+});
+
 gulp.task('default', ['sass', 'js', 'vendor', 'images']);
 
 gulp.task('watch', function() {
@@ -80,6 +87,7 @@ gulp.task('serve', function() {
   gulp.watch(paths.js, ['js']);
   gulp.watch(paths.vendor, ['vendor']);
   gulp.watch(paths.img, ['images']);
+  gulp.watch(paths.html, ['html']);
 
   connect.server({
     root: 'public',
