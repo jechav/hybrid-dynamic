@@ -95,10 +95,14 @@
 .hand {
     cursor: pointer;
     outline: none;
+    border: 1px solid #777;
 }
 .flex {
   display: flex;
 }
 *:focus {
   outline: none;
+}
+.hide {
+  display: none;
 }

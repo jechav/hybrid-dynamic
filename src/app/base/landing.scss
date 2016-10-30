@@ -1,12 +1,179 @@
-/*
- *header bar styles
- */
-header{
+html, body{
+  height: 100%;
+}
+.content {
+  height: 100%;
+  position: relative;
+  box-sizing: border-box;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.top{
+  background-color: white;
+  position: relative;
+  .cloud {
+    width: 30px;
+    position: absolute;
+    &.cloud-1 {
+      top: 30px;
+      left: 170px;
+    }
+    &.cloud-2 {
+      top: 20px;
+      left: 120px;
+    }
+    &.cloud-3 {
+      top: 30px;
+      left: 221px;
+    }
+  }
+  .sun-container {
+    position: relative;
+    .mask {
+      position: absolute;
+      left: 0;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      background-color: black;
+      opacity: 0.5;
+
+      filter: blur(10px);
+      -webkit-filter: blur(10px);
+      -moz-filter: blur(10px);
+      -o-filter: blur(10px);
+      -ms-filter: blur(10px);
+      filter: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'><filter id='svgMask'><feGaussianBlur stdDeviation='10' /></filter></svg>#svgMask");
+    }
+    #sun {
+      padding: 7px;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 50px;
+      &.sun0{
+        content:url("http://imgur.com/SZ8Cm.jpg");
+      }
+      &.sun01{
+        width: 50px;
+      }
+      &.sun02{
+        width: 70px;
+      }
+      &.sun03{
+        width: 90px;
+      }
+    }
+  }
+}
+.body {
+  display: flex;
+  justify-content: space-between;
+  .panel {
+    text-align: center;
+    width: 115px;
+  }
+  .regulator{
+  }
+  .cloud-ele{
+    img {
+      width: 80px;
+    }
+  }
+  #regulator {
+    width: 70px;
+  }
+  #panel {
+    width: 90px;
+  }
+}
+.bot {
+  .energy {
+    padding-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+  }
+  .appliances{
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    padding: 5px;
+    border: 1px solid;
+    border-radius: 10px;
+    img {
+      width: 70px;
+      height: 70px;
+    }
+  }
+  #battery {
+    height: 100px;
+  }
+  #electrical {
+    height: 100px;
+  }
 }
 
-body{
-  //background-color: $gray;
+#canvas {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+
+  width: 90%;
+  height: 90%;
+  max-width: 900px;
+  max-height: 600px;
 }
-.container {
-  //max-width: 960px;
+.line {
+  position: absolute;
+  background-color: black;
+  display:none;
+  height: 2px;
+  width: 2px;
 }
+/*
+ *animation lines
+ */
+
+  //NORMAL ANIMATION 
+
+  @keyframes animatedBackground {
+    from { background-position: 100% 0; }
+    to { background-position: 0 0; }
+  }
+  .animate-line{ 
+    background-image: url(/assets/img/pattern.jpg);
+    background-position: 100% 0;
+    background-repeat: repeat-x;
+
+    animation: animatedBackground 20s linear infinite;
+  }
+
+  //INVERT ANIMATION 
+
+  @keyframes animatedBackgroundI {
+    from { background-position: 0 0; }
+    to { background-position: 100% 0; }
+  }
+  .animate-line-i{ 
+    background-image: url(/assets/img/pattern.jpg);
+    background-position: 0 0;
+    background-repeat: repeat-x;
+
+    animation: animatedBackgroundI 20s linear infinite;
+  }
+
+  //VERTICAL ANIMATION
+
+  @keyframes animatedBackgroundV {
+    from { background-position: 0 100%; }
+    to { background-position: 0 0; }
+  }
+  .animate-line-v{ 
+    background-image: url(/assets/img/pattern2.jpg);
+    background-position: 0 100%;
+    background-repeat: repeat-x;
+
+    animation: animatedBackgroundV 20s linear infinite;
+  }
