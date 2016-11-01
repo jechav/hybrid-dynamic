@@ -13,58 +13,53 @@ html, body{
 .top{
   background-color: white;
   position: relative;
+  padding: 20px;
+  height: 140px;
   .cloud {
     width: 30px;
     position: absolute;
+    &.night {
+      content:url(/assets/img/star.png);
+    }
     &.cloud-1 {
-      top: 30px;
+      top: 70px;
       left: 170px;
+      &.night {
+        content:url(/assets/img/stars.png);
+      }
     }
     &.cloud-2 {
       top: 20px;
-      left: 120px;
+      left: 180px;
     }
     &.cloud-3 {
       top: 30px;
       left: 221px;
     }
   }
-  .sun-container {
-    position: relative;
-    .mask {
+  #btn-sun {
+    .info {
+      right: 0px;
+      color: #666;
       position: absolute;
-      left: 0;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      background-color: black;
-      opacity: 0.5;
-
-      filter: blur(10px);
-      -webkit-filter: blur(10px);
-      -moz-filter: blur(10px);
-      -o-filter: blur(10px);
-      -ms-filter: blur(10px);
-      filter: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'><filter id='svgMask'><feGaussianBlur stdDeviation='10' /></filter></svg>#svgMask");
+      bottom: 0px;
     }
-    #sun {
-      padding: 7px;
-      position: absolute;
-      top: 0;
-      left: 0;
+  }
+  #sun {
+    width: 40px;
+    transition: all 0.7s;
+    &.sun0{
+      content:url(/assets/img/moon2.png);
+      width: 70px;
+    }
+    &.sun01{
+      width: 40px;
+    }
+    &.sun02{
       width: 50px;
-      &.sun0{
-        content:url("http://imgur.com/SZ8Cm.jpg");
-      }
-      &.sun01{
-        width: 50px;
-      }
-      &.sun02{
-        width: 70px;
-      }
-      &.sun03{
-        width: 90px;
-      }
+    }
+    &.sun03{
+      width: 70px;
     }
   }
 }
@@ -76,6 +71,26 @@ html, body{
     width: 115px;
   }
   .regulator{
+    text-align: center;
+    position: relative;
+    .btn{
+      position: relative;
+    }
+    .info{
+      position: absolute;
+      font-size: 15px;
+      width: 45px;
+      top: -30px;
+      z-index: 9;
+      left:50%;
+      margin-left:-22.5px;
+    }
+    #wifi{
+      position:absolute;
+      top: 0;
+      right: -60px;
+      width: 40px;
+    }
   }
   .cloud-ele{
     img {
@@ -84,6 +99,9 @@ html, body{
   }
   #regulator {
     width: 70px;
+    @media(min-width: 600px){
+      width: 140px;
+    }
   }
   #panel {
     width: 90px;
@@ -94,6 +112,18 @@ html, body{
     padding-bottom: 20px;
     display: flex;
     justify-content: space-between;
+    .btn{
+      position: relative;
+    }
+    .info{
+      position: absolute;
+      bottom: -4px;
+      left: 32px;
+      font-size: 10px;
+    }
+    @media(min-width: 800px){
+      justify-content: space-around;
+    }
   }
   .appliances{
     display: flex;
@@ -102,9 +132,44 @@ html, body{
     padding: 5px;
     border: 1px solid;
     border-radius: 10px;
+    position: relative;
+    @media(min-height: 641px){
+      margin-top: 10px;
+    }
     img {
       width: 70px;
       height: 70px;
+    }
+    .appliance{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      .btn {
+        padding-bottom: 2px;
+        border-bottom: 5px solid $green;
+      }
+      .info {
+        color: #000;
+      }
+    }
+    #indicator_power{
+      position: absolute;
+      top: -35px;
+      left: 7px;
+      .nums {
+        font-size: 11px;
+      }
+      .blocks {
+        span {
+          display: inline-block;
+          width: 9px;
+          height: 12px;
+          background-color: #777;
+          &.on {
+            background-color: $red;
+          }
+        }
+      }
     }
   }
   #battery {
@@ -129,12 +194,69 @@ html, body{
   position: absolute;
   background-color: black;
   display:none;
-  height: 2px;
-  width: 2px;
+  height: 4px;
+  width: 4px;
+}
+.info {
+  font-weight: bold;
+  font-size: 12px;
+  color: $red;
+  margin: 6px;
+  display: inline-block;
+}
+
+/*
+ *material btns
+ */
+  .btn {
+    position: relative;
+    display: block;
+    padding: 14px;
+    overflow: hidden;
+    border-width: 0;
+    outline: none;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, .5);
+    background-color: $white;
+    transition: background-color .3s;
+    &:hover, &:focus {
+      background-color: darken($white, 5);
+    }
+    &:before {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      display: block;
+      width: 0;
+      padding-top: 0;
+      border-radius: 100%;
+      background-color: rgba(236, 240, 241, .3);
+      -webkit-transform: translate(-50%, -50%);
+      -moz-transform: translate(-50%, -50%);
+      -ms-transform: translate(-50%, -50%);
+      -o-transform: translate(-50%, -50%);
+      transform: translate(-50%, -50%);
+    }
+  }
+  .btn:active:before {
+    width: 120%;
+    padding-top: 120%;
+    transition: width .2s ease-out, padding-top .2s ease-out;
 }
 /*
  *animation lines
  */
+  .durations {
+    animation-duration: 20s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    &.x2 {
+      animation-duration: 10s;
+    }
+    &.x3 {
+      animation-duration: 5s;
+    }
+  }
 
   //NORMAL ANIMATION 
 
@@ -147,7 +269,8 @@ html, body{
     background-position: 100% 0;
     background-repeat: repeat-x;
 
-    animation: animatedBackground 20s linear infinite;
+    animation-name: animatedBackground;
+    @extend .durations
   }
 
   //INVERT ANIMATION 
@@ -161,7 +284,8 @@ html, body{
     background-position: 0 0;
     background-repeat: repeat-x;
 
-    animation: animatedBackgroundI 20s linear infinite;
+    animation-name: animatedBackgroundI;
+    @extend .durations
   }
 
   //VERTICAL ANIMATION
@@ -175,5 +299,18 @@ html, body{
     background-position: 0 100%;
     background-repeat: repeat-x;
 
-    animation: animatedBackgroundV 20s linear infinite;
+    animation-name: animatedBackgroundV;
+    @extend .durations
   }
+
+  .off {
+	filter: gray;
+	filter: url(/assets/svg/grayscale.svg);
+	filter: grayscale(100%);
+	-webkit-filter: grayscale(100%);
+	-moz-filter: grayscale(100%);
+	-ms-filter: grayscale(100%);
+	-o-filter: grayscale(100%);
+  }
+
+

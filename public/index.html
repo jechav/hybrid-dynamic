@@ -16,21 +16,20 @@
 
   <div class="content">
     <!-- -lines -->
-    <div class="line animate-line" id="line-panel"></div>
-    <div class="line animate-line-v" id="line-regulator"></div>
+    <div class="line" id="line-panel"></div>
+    <div class="line" id="line-regulator"></div>
 
-    <div class="line animate-line-i" id="line-electrical"></div>
-    <div class="line animate-line" id="line-battery"></div>
+    <div class="line" id="line-electrical"></div>
+    <div class="line" id="line-battery"></div>
     <div class="line hide" id="line-off"></div>
 
     <div id="canvas">
       <div class="top">
         <!--sun-->
-        <div class="inline sun-container">
-          <div class="mask">
-            <img src="/assets/img/sun.png" class="sun02" alt="" id="sun" >
-          </div>
-        </div>
+        <button type="button" class="btn" id="btn-sun">
+          <img src="/assets/img/sun.png" class="sun01" alt="" id="sun" >
+          <span class="info" id="info-sun">1</span>
+        </button>
         <img src="/assets/img/cloud-md.png" alt="" class="cloud cloud-1">
         <img src="/assets/img/cloud-md.png" alt="" class="cloud cloud-2">
         <img src="/assets/img/cloud-md.png" alt="" class="cloud cloud-3">
@@ -38,10 +37,14 @@
       <div class="body">
         <div class="panel">
           <img src="/assets/img/Solar-power.png" alt="" id="panel" ><br>
-          <span id="info">200w</span>
+          <p class="info" id="info-panel">100W</p>
         </div>
         <div class="regulator">
-          <img src="/assets/img/on.jpg" alt="" id="regulator">
+          <button type="button" class="btn" id="btn_regulator">
+            <img src="/assets/img/regulator.png" alt="" id="regulator">
+          </button>
+          <p class="info">3000W</p>
+          <img src="/assets/img/wifi.gif" id="wifi" />
         </div>
         <div class="cloud-ele">
           <img src="/assets/img/cloud.png" alt=""  id="clouds"> <br>
@@ -51,13 +54,54 @@
       <div class="bot">
         <div class="energy">
           <img src="/assets/img/electric-tower.png" alt="" id="electrical">
-          <img src="/assets/img/battery-in.gif" alt="" id="battery">
+          <button type="button" class="btn" id="btn_battery">
+            <img src="/assets/img/battery-in.gif" alt="" id="battery">
+            <span class="info">150W</span>
+          </button>
         </div>
         <div class="appliances">
-          <img src="/assets/img/e4_2.png" alt="" id="air">
-          <img src="/assets/img/e3_2.png" alt="" id="wash">
-          <img src="/assets/img/e2_2.png" alt="" id="secadora">
-          <img src="/assets/img/e1_2.png" alt="" id="tv">
+          <div id="indicator_power">
+            <div class="nums">
+              <span>0%</span>
+              <span style="float: right">100%</span>
+            </div>
+            <div class="blocks">
+              <span class="block-0"></span>
+              <span class="block-1"></span>
+              <span class="block-2"></span>
+              <span class="block-3"></span>
+              <span class="block-4"></span>
+              <span class="block-5"></span>
+              <span class="block-6"></span>
+              <span class="block-7"></span>
+              <span class="block-8"></span>
+              <span class="block-9"></span>
+            </div>
+          </div>
+          <div class="appliance">
+            <button class="btn" type="button" id="btn_air">
+              <img src="/assets/img/e4_2.png" alt="" id="air">
+            </button>
+            <span class="info">3500W</span>
+          </div>
+          <div class="appliance">
+            <button class="btn" type="button" id="btn_wash">
+              <img src="/assets/img/e3_2.png" alt="" id="wash">
+            </button>
+            <span class="info">1200W</span>
+          </div>
+          <div class="appliance">
+            <button class="btn" type="button" id="btn_cleaner">
+              <img src="/assets/img/e2_2.png" alt="" id="cleaner">
+            </button>
+            <span class="info">100W</span>
+          </div>
+          <div class="appliance">
+            <button class="btn" type="button" id="btn_tv">
+              <img src="/assets/img/e1_2.png" alt="" id="tv">
+            </button>
+            <span class="info">300W</span>
+          </div>
         </div>
       </div>
     </div>
