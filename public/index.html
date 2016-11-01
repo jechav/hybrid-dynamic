@@ -40,24 +40,36 @@
           <p class="info" id="info-panel">100W</p>
         </div>
         <div class="regulator">
-          <button type="button" class="btn" id="btn_regulator">
-            <img src="/assets/img/regulator.png" alt="" id="regulator">
-          </button>
-          <p class="info">3000W</p>
-          <img src="/assets/img/wifi.gif" id="wifi" />
+          <div class="relative">
+            <button type="button" class="btn" id="btn_regulator">
+              <img src="/assets/img/regulator.png" alt="" id="regulator">
+            </button>
+            <p class="info">3000W</p>
+            <img src="/assets/img/wifi.gif" id="wifi" />
+          </div>
         </div>
         <div class="cloud-ele">
-          <img src="/assets/img/cloud.png" alt=""  id="clouds"> <br>
-          <img src="/assets/img/wifi-on.gif" alt="" id="wifi">
+          <div></div>
+          <div>
+            <img src="/assets/img/cloud.png" alt=""  id="clouds"> <br>
+            <img src="/assets/img/wifi-on.gif" alt="" id="wifi">
+          </div>
         </div>
       </div>
       <div class="bot">
         <div class="energy">
-          <img src="/assets/img/electric-tower.png" alt="" id="electrical">
-          <button type="button" class="btn" id="btn_battery">
-            <img src="/assets/img/battery-in.gif" alt="" id="battery">
+          <div class="electrical-container">
+            <img src="/assets/img/electric-tower.png" alt="" id="electrical">
+          </div>
+          <div class="battery-container">
+            <button type="button" class="btn" id="btn_battery">
+              <div id="battery" class="b_on">
+                <div class="b_top"></div>
+                <div class="b_body"></div>
+              </div>
+            </button>
             <span class="info">150W</span>
-          </button>
+          </div>
         </div>
         <div class="appliances">
           <div id="indicator_power">

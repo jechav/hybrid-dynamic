@@ -4,7 +4,7 @@
    */
   let STATE_SUN = 1; //1,2,3,0
   let STATE_REGU = true; //true, false
-  let STATE_BAT = true; //true, false
+  let STATE_BAT = 'b_on'; //b_on, b_ff, charging, uncharging, both 
 
   let STATE_APPL = {
     'air': {state: false, val: 3500},
@@ -66,55 +66,39 @@
    */
   function renderLines(){
     console.info('UPDATE LINES');
+    let top, left, width, height, v_left, t_top;
 
-    locateH(l_panel, panel, regulator)
-    locateV(l_regulator, regulator, appliances)
+    //PANEL REGULATOR
+    top = panel.offset().top + panel.height()/2
+    left = panel.offset().left + panel.width()
+    width = regulator.offset().left - left
+    _updateLine(l_panel, top, left, width)
 
-    locateH(l_electrical, electrical, battery, 2)
-    locateIH(l_battery, battery, electrical, 2)
+    //REGULATOR APPLIANCES
+    top = regulator.offset().top + regulator.height();
+    left = v_left = regulator.offset().left + regulator.width()/2; //save on v_left for next line
+    height = appliances.offset().top - top
+    _updateLine(l_regulator, top, left, null, height)
 
-    locateOff(l_off, electrical, battery, appliances)
+    //TOWER V_LINE
+    top = t_top = electrical.offset().top + electrical.height()/2 //save on t_top for next line
+    left = electrical.offset().left + electrical.width()
+    width = v_left - left
+    _updateLine(l_electrical, top, left, width)
+
+    //V_LINE BATTERY
+    top = t_top;
+    left = v_left+4;
+    width = battery.offset().left - left;
+    _updateLine(l_battery, top, left, width)
+
+    //V_LINE APPLIANCES or OFF
+    top = t_top;
+    left = v_left;
+    height = appliances.offset().top - top;
+    _updateLine(l_off, top, left, null, height)
   }
-  var adj = 14; //adjunst by button and padding inside
-
-  function locateOff(ele, start1, start2, target){
-    let top = start1.offset().top + start1.height()/2 + adj; 
-    let height = target.offset().top - top 
-
-    let left = (( start2.offset().left - ( start1.offset().left + start1.width() ) ) / 2)
-            + start1.offset().left + start1.width() + adj/2
-    //round 
-    if( (left - Math.floor(left)).toFixed(1) > 0.4){
-      left = left+1;
-    }else { left = left+2 }
-
-    updateLine(ele, top, left, null, height)
-  }
-  function locateIH(ele, start, target, half = 1){
-    let top = start.offset().top + start.height()/2; 
-    let width = (start.offset().left - (target.offset().left + target.width())) / half
-    let left = target.offset().left + target.width() + width + adj - 2;
-
-    updateLine(ele, top, left, width)
-  }
-
-  function locateH(ele, start, target, half = 1){
-    let top = start.offset().top + start.height()/2 + adj 
-    let left = start.offset().left + start.width()
-    let width = ( (target.offset().left - left) / half ) + adj/2 + 2
-
-    updateLine(ele, top, left, width)
-  }
-
-  function locateV(ele, start, target){
-    let top = start.offset().top + start.height();
-    let left = start.offset().left + start.width()/2;
-    let height = target.offset().top - top
-
-    updateLine(ele, top, left, null, height)
-  }
-
-  const updateLine = function(ele, top, left, width, height) {
+  const _updateLine = function(ele, top, left, width, height) {
     ele.css({
       top: top,
       left: left,
@@ -123,7 +107,6 @@
       display: 'block'
     })
   }
-
   /*
    *EVENTS
    */
@@ -180,7 +163,19 @@
   }
   //**** BATTERY ****//
   function toggleBattery(){
-    console.log(STATE_BAT);
+    if(STATE_BAT != 'b_off'){
+      STATE_BAT = 'b_off'
+    }else{
+      STATE_BAT = 'charging'
+    }
+    g_updateBatter()
+  }
+  function g_updateBatter(){
+    let list = ['b_on', 'b_off', 'charging',
+                'uncharging', 'both']
+
+    battery.removeClass( list.join(' ') )
+    battery.addClass(STATE_BAT)
   }
   //**** APPLIANCES ****//
   function toggleAppl(key){
