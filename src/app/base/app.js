@@ -6,13 +6,16 @@
   let STATE_REGU = true; //true, false
   let STATE_BAT = 'b_on'; //b_on, b_ff, charging, uncharging, both 
 
+  let TIMER = null;
+
   let STATE_APPL = {
     'air': {state: false, val: 3500},
     'wash': {state: false, val: 1200},
     'cleaner': {state: false, val: 1000},
     'tv': {state: false, val: 300}
   }; 
-  let USE_APPLIANCE = 0;
+  let USE_APPLIANCE = 0; //%
+  let USE_APPLIANCE_SUM = 0; //sum 
 
   /*
    * Elements
@@ -39,8 +42,10 @@
    */
   const init = () => {
     debounce(renderLines, 200);
-    animations()
+    animations();
     events();
+
+    debounce(updateSystem, 210);
   }
   const events = () => {
     btn_sun.on('click', incrementSun)
@@ -50,7 +55,6 @@
     //appliances
     $.each(STATE_APPL, (key, val) => {
       $('#btn_'+key).on('click', () => { toggleAppl(key) })
-      //$('#btn_air').on('click', () => { toggleAppl('air') })
     })
     $(window).on("resize", () =>  debounce(renderLines, 200) );
   }
@@ -116,6 +120,8 @@
     STATE_SUN = (STATE_SUN == 3)?0:STATE_SUN+1; 
     updateSun()
     g_updateLinePanelRegualtor();
+
+    updateSystem();
   }
   function updateSun(){
     const list = [
@@ -137,10 +143,12 @@
     l_panel.removeClass('animate-line x2 x3')
     l_regulator.removeClass('animate-line-v x2 x3')
 
-    if(STATE_SUN != 0){
+    if(STATE_SUN == 0 || !STATE_REGU){
+      return;
+    }else { 
       l_panel.addClass('animate-line')
       l_regulator.addClass('animate-line-v')
-    }else { return; }
+    }
     if(STATE_SUN == 2 || STATE_SUN == 3){
       l_panel.addClass(`x${STATE_SUN}`)
       l_regulator.addClass(`x${STATE_SUN}`)
@@ -150,15 +158,20 @@
   //**** REGULATOR ****//
   function toggleRegulator(){
     STATE_REGU = !STATE_REGU;
+    g_updateLinePanelRegualtor();
     g_updateRegulatorWifi();
+
+    updateSystem();
   }
   function g_updateRegulatorWifi(){
     if(STATE_REGU){ //on
       regulator.removeClass('off')
       $('#wifi').removeClass('hide');
+      $('#g_wifi').removeClass('w_off');
     }else{ //off
       regulator.addClass('off')
       $('#wifi').addClass('hide');
+      $('#g_wifi').addClass('w_off');
     }
   }
   //**** BATTERY ****//
@@ -169,18 +182,38 @@
       STATE_BAT = 'charging'
     }
     g_updateBatter()
+
+    updateSystem();
   }
-  function g_updateBatter(){
+  function g_updateBatter(state){
     let list = ['b_on', 'b_off', 'charging',
                 'uncharging', 'both']
 
     battery.removeClass( list.join(' ') )
-    battery.addClass(STATE_BAT)
+    battery.addClass(state || STATE_BAT)
+  }
+
+  function chargeBattery(cb, s=7){
+    //active bar
+    l_battery.animateLine(`animate-line x${STATE_SUN}`)
+    //active battery
+    g_updateBatter('charging')
+    //timer unactive bar and battery
+    if (TIMER) clearTimeout(TIMER)
+    TIMER = setTimeout(() => {
+      l_battery.removeClass('animate-line x2 x3 reverse')
+      g_updateBatter('b_on')
+      if(cb) cb();
+    }, (s - STATE_SUN) * 1000);
+  }
+  function feedElectrical(rev){
+    l_electrical.animateLine(`animate-line reverse x${STATE_SUN}`)
   }
   //**** APPLIANCES ****//
   function toggleAppl(key){
     STATE_APPL[key].state = !STATE_APPL[key].state;
     g_updateAppliances()
+    updateSystem();
   }
   function g_updateAppliances(){
     $.each(STATE_APPL, (key, val) => {
@@ -194,13 +227,72 @@
     $.each(STATE_APPL, (key, val) => {
       if(val.state) { sum+=val.val }
     })
-    USE_APPLIANCE =  (sum*100/total)/10;
+
+    USE_APPLIANCE_SUM =  sum;
+    USE_APPLIANCE =  sum*100/total;
+
+    let tm = USE_APPLIANCE/10;
+    if(tm < 1 && tm > 0) tm = tm=1;
 
     $('.blocks span').removeClass('on'); //clean
-    for(let i = 0; i < USE_APPLIANCE; i++){
+    for(let i = 0; i < parseInt(tm); i++){
       $('.block-'+i).addClass('on');
     }
   }
+
+  //GLOBAL
+  function updateSystem(){
+    if(STATE_SUN == 0 || !STATE_REGU){
+      if(STATE_BAT != 'b_off'){ 
+        if(USE_APPLIANCE > 0){ //accesories with regulator off and battery on
+
+        }else{ //regulator off, battery on and accesories off 
+          //clear all lines
+          l_off.animateLine('')
+          l_electrical.animateLine('')
+          l_battery.animateLine('')
+        }
+      }else{
+        if(USE_APPLIANCE > 0){ //accesories with regulator off and battery of
+
+        }else{ //regulator off, battery off and apliences off 
+          //clear all lines
+          l_off.animateLine('')
+          l_electrical.animateLine('')
+          l_battery.animateLine('')
+        }
+      }
+    }else{
+      if(STATE_BAT != 'b_off'){
+        if(USE_APPLIANCE > 0){ //accesories with regulator on, battery on
+
+        }else{
+          //if sun > 1 charge electrical and battery both
+          if(STATE_SUN > 1){ 
+            chargeBattery()
+            feedElectrical();
+          }else{
+            chargeBattery(() => {
+              feedElectrical();
+            })
+          }
+        }
+      }else{
+        if (TIMER) clearTimeout(TIMER)
+        l_battery.animateLine('')
+        feedElectrical();
+
+        if(USE_APPLIANCE > 0){ //accesories with regulator on, batery off
+          let sun_val = STATE_SUN * 1000;
+          console.log(sun_val, USE_APPLIANCE_SUM);
+          if(sun_val  < USE_APPLIANCE_SUM){
+          }
+
+        }
+      }
+    }
+
+  };
   
 
   /*
@@ -215,8 +307,6 @@
       method();
     }, delay);
   };
-
-
   //ANIMATION
   $.fn.extend({
     animateCss: function (animationName) {
@@ -224,6 +314,10 @@
       this.addClass('animated ' + animationName).one(animationEnd, function() {
         $(this).removeClass('animated ' + animationName);
       });
+    },
+    animateLine: function (animations) {
+      var all = 'animate-line animate-line-v reverse x0 x1 x2 x3';
+      this.removeClass(all).addClass(animations)
     }
   });
 

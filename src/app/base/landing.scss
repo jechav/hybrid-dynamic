@@ -115,6 +115,11 @@ html, body{
         width: 140px;
       }
     }
+    #g_wifi {
+      &.w_off{
+        content:url(/assets/img/wifi-off.jpg);
+      }
+    }
   }
 }
 .bot {
@@ -433,10 +438,10 @@ html, body{
     width: 120%;
     padding-top: 120%;
     transition: width .2s ease-out, padding-top .2s ease-out;
-}
-/*
- *animation lines
- */
+  }
+  /*
+   *animation lines
+   */
   .durations {
     animation-duration: 20s;
     animation-timing-function: linear;
@@ -449,38 +454,24 @@ html, body{
     }
   }
 
-  //NORMAL ANIMATION 
-
+  //HORiZONTAL ANIMATION 
   @keyframes animatedBackground {
     from { background-position: 100% 0; }
     to { background-position: 0 0; }
   }
-  .animate-line{ 
+  .animate-line { 
     background-image: url(/assets/img/pattern.jpg);
     background-position: 100% 0;
     background-repeat: repeat-x;
 
     animation-name: animatedBackground;
-    @extend .durations
-  }
-
-  //INVERT ANIMATION 
-
-  @keyframes animatedBackgroundI {
-    from { background-position: 0 0; }
-    to { background-position: 100% 0; }
-  }
-  .animate-line-i{ 
-    background-image: url(/assets/img/pattern.jpg);
-    background-position: 0 0;
-    background-repeat: repeat-x;
-
-    animation-name: animatedBackgroundI;
-    @extend .durations
+    @extend .durations;
+    &.reverse {
+      animation-direction: reverse;
+    }
   }
 
   //VERTICAL ANIMATION
-
   @keyframes animatedBackgroundV {
     from { background-position: 0 100%; }
     to { background-position: 0 0; }
@@ -491,17 +482,21 @@ html, body{
     background-repeat: repeat-x;
 
     animation-name: animatedBackgroundV;
-    @extend .durations
+    @extend .durations;
+
+    &.reverse {
+      animation-direction: reverse;
+    }
   }
 
   .off {
-	filter: gray;
-	filter: url(/assets/svg/grayscale.svg);
-	filter: grayscale(100%);
-	-webkit-filter: grayscale(100%);
-	-moz-filter: grayscale(100%);
-	-ms-filter: grayscale(100%);
-	-o-filter: grayscale(100%);
+    filter: gray;
+    filter: url(/assets/svg/grayscale.svg);
+    filter: grayscale(100%);
+    -webkit-filter: grayscale(100%);
+    -moz-filter: grayscale(100%);
+    -ms-filter: grayscale(100%);
+    -o-filter: grayscale(100%);
   }
 
 
