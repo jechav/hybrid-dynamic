@@ -70,7 +70,7 @@ html, body{
     text-align: center;
     flex: 0.2;
     #panel {
-      width: 90px;
+      width: 120px;
       @media(max-width: 641px){
         width: 60px;
       }
@@ -81,6 +81,9 @@ html, body{
     flex: 0.6;
     display: flex;
     justify-content: center;
+    .btn {
+      padding: 10px;
+    }
     .info{
       position: absolute;
       font-size: 15px;
@@ -285,6 +288,9 @@ html, body{
         @extend %absolute;
         background: url(/assets/img/thunder.png);
         background-size: 50px;
+        @media(max-width: 640px){
+          background-size: 25px;
+        }
         background-position: center; 
         background-repeat: no-repeat;
         z-index: 2;
@@ -320,6 +326,9 @@ html, body{
         @extend %absolute;
         background: url(/assets/img/thunder.png);
         background-size: 50px;
+        @media(max-width: 640px){
+          background-size: 25px;
+        }
         background-position: center; 
         background-repeat: no-repeat;
         z-index: 2;

@@ -28,11 +28,11 @@ gulp.task('sass', function(done) {
     .pipe(concat('main.css'))
     .pipe(sourcemaps.init({loadMaps: true}))
     .pipe(sass())
-    //.pipe(cleanCSS({compatibility: 'ie8'}))
-    //.pipe(autoprefixer({
-      //browsers: ['last 2 versions'],
-      //cascade: false
-    //}))
+    .pipe(cleanCSS({compatibility: 'ie8'}))
+    .pipe(autoprefixer({
+      browsers: ['last 2 versions'],
+      cascade: false
+    }))
     .pipe(rename({ extname: '.min.css' }))
     .pipe(sourcemaps.write('../maps'))
     .pipe(gulp.dest('./public/css/'))
