@@ -30,7 +30,7 @@ gulp.task('sass', function(done) {
     .pipe(sass())
     .pipe(cleanCSS({compatibility: 'ie8'}))
     .pipe(autoprefixer({
-      browsers: ['last 2 versions'],
+      browsers: ['> 1%'],
       cascade: false
     }))
     .pipe(rename({ extname: '.min.css' }))

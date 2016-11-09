@@ -9,34 +9,38 @@ html, body{
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
+  .back-top{
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 25%;
+    z-index: -1;
+    overflow: hidden;
+    background: #c9dbe9;
+    background: linear-gradient(to bottom, #c9dbe9 0%, #fff 100%);
+    &.night {
+      background: #5e6f7c;
+      background: linear-gradient(to bottom, #5e6f7c 0%, #fff 100%);
+    }
+  }
 }
 .top{
-  background-color: white;
   position: relative;
   height: 100px;
-  .cloud {
-    width: 30px;
+  #how {
     position: absolute;
-    &.night {
-      content:url(/assets/img/star.png);
-    }
-    &.cloud-1 {
-      top: 70px;
-      left: 170px;
-      &.night {
-        content:url(/assets/img/stars.png);
-      }
-    }
-    &.cloud-2 {
-      top: 20px;
-      left: 180px;
-    }
-    &.cloud-3 {
-      top: 30px;
-      left: 221px;
+    top: 0;
+    left: 120px;
+    font-size: 35px;
+    font-weight: bold;
+    @media (max-width: 639px) {
+      font-size: 20px;
     }
   }
   #btn-sun {
+    background: transparent;
     .info {
       right: 0px;
       color: #666;
@@ -45,20 +49,20 @@ html, body{
     }
   }
   #sun {
-    width: 40px;
+    width: 30px;
     transition: all 0.7s;
     &.sun0{
       content:url(/assets/img/moon2.png);
-      width: 70px;
+      width: 60px;
     }
     &.sun01{
-      width: 40px;
+      width: 30px;
     }
     &.sun02{
-      width: 50px;
+      width: 40px;
     }
     &.sun03{
-      width: 70px;
+      width: 60px;
     }
   }
 }
@@ -71,8 +75,8 @@ html, body{
     flex: 0.2;
     #panel {
       width: 120px;
-      @media(max-width: 641px){
-        width: 60px;
+      @include mobile_and_landscape {
+        width: 70px;
       }
     }
   }
@@ -95,7 +99,7 @@ html, body{
     }
     #regulator {
       width: 140px;
-      @media(max-width: 641px){
+      @include mobile_and_landscape {
         width: 60px;
       }
     }
@@ -104,7 +108,7 @@ html, body{
       top: 0;
       right: -45px;
       width: 40px;
-      @media(max-width: 641px){
+      @include mobile_and_landscape {
         right: -32px;
         width: 28px;
       }
@@ -113,9 +117,9 @@ html, body{
   .cloud-ele{
     flex: 0.2;
     img {
-      width: 90px;
-      @media(min-width: 600px){
-        width: 140px;
+      width: 120px;
+      @include mobile_and_landscape {
+        width: 90px;
       }
     }
     #g_wifi {
@@ -141,7 +145,7 @@ html, body{
         bottom: -26px;
         left: 50%;
         transform: translate(-50%, 0);
-        @media(max-width: 641px){
+        @include mobile_and_landscape {
           bottom: -22px;
           left: 50%;
           font-size: 10px;
@@ -166,7 +170,7 @@ html, body{
     img {
       width: 70px;
       height: 70px;
-      @media(max-width: 641px){
+      @include mobile_and_landscape {
         width: 50px;
         height: 50px;
       }
@@ -179,7 +183,7 @@ html, body{
       .btn {
         padding-bottom: 2px;
         border-bottom: 5px solid $green;
-        @media(max-width: 641px){
+        @include mobile_and_landscape {
           padding-top: 7px;
           padding-left: 7px;
           padding-right: 7px;
@@ -187,7 +191,7 @@ html, body{
       }
       .info {
         color: #000;
-        @media(max-width: 641px){
+      @include mobile_and_landscape {
           font-size: 10px;
         }
       }
@@ -199,7 +203,7 @@ html, body{
       .nums {
         font-size: 11px;
       }
-      @media(max-width: 641px){
+      @include mobile_and_landscape {
         top: -30px;
         .nums {
           font-size: 9px;
@@ -210,7 +214,7 @@ html, body{
           display: inline-block;
           width: 9px;
           height: 12px;
-          @media(max-width: 641px){
+          @include mobile_and_landscape {
             width: 6px;
             height: 9px;
           }
@@ -225,7 +229,7 @@ html, body{
   #electrical {
     height: 100px;
     width: 100px;
-    @media(max-width: 641px){
+    @include mobile_and_landscape {
       height: 60px;
       width: 60px;
     }
@@ -249,7 +253,7 @@ html, body{
       position: relative;
       z-index: 1;
     }
-    @media(max-width: 641px){
+    @include mobile_and_landscape {
       height: 60px;
       width: 33px;
       .b_top {
@@ -288,7 +292,7 @@ html, body{
         @extend %absolute;
         background: url(/assets/img/thunder.png);
         background-size: 50px;
-        @media(max-width: 640px){
+        @include mobile_and_landscape {
           background-size: 25px;
         }
         background-position: center; 
@@ -322,17 +326,17 @@ html, body{
         animation-timing-function: ease-in-out;
         animation-direction: alternate;
       }
-      .b_body:before{
-        @extend %absolute;
-        background: url(/assets/img/thunder.png);
-        background-size: 50px;
-        @media(max-width: 640px){
-          background-size: 25px;
-        }
-        background-position: center; 
-        background-repeat: no-repeat;
-        z-index: 2;
-      }
+      //.b_body:before{
+        //@extend %absolute;
+        //background: url(/assets/img/thunder.png);
+        //background-size: 50px;
+        //@include mobile_and_landscape {
+          //background-size: 25px;
+        //}
+        //background-position: center; 
+        //background-repeat: no-repeat;
+        //z-index: 2;
+      //}
     }
 
   }
@@ -394,6 +398,12 @@ html, body{
   height: 90%;
   max-width: 900px;
   max-height: 600px;
+  @media screen and (orientation:landscape) and (max-width: 767px) { 
+    height: initial;
+    .top {
+      margin-top: 115px;
+    }
+  }
 }
 .line {
   position: absolute;
@@ -509,3 +519,61 @@ html, body{
   }
 
 
+  /*Time to finalise the cloud shape*/
+  .cloud {
+    width: 200px; height: 60px;
+    background: #fff;
+    top: 0;
+    left: 0;
+
+    border-radius: 200px;
+    position: absolute; 
+
+    &:before, &:after {
+      content: '';
+      position: absolute; 
+      background: #fff;
+      width: 100px; height: 80px;
+      position: absolute; top: -15px; left: 10px;
+
+      border-radius: 100px;
+      transform: rotate(30deg);
+    }
+    &:after {
+      width: 120px; height: 120px;
+      top: -55px; left: auto; right: 15px;
+    }
+    &.x1 {
+     top: 80px;
+     transform: scale(0.8);
+     animation: moveclouds 15s linear infinite;
+    }
+    &.x2 {
+      transform: scale(0.4);
+      opacity: 0.6; /*opacity proportional to the size*/
+      animation: moveclouds 25s linear infinite;
+    }
+    &.x3 {
+      top: 20px;
+      transform: scale(0.5);
+      opacity: 0.8; /*opacity proportional to the size*/
+      animation: moveclouds 10s linear infinite;
+    }
+    &.x4 {
+      top: 60px;
+      transform: scale(0.75);
+      opacity: 0.75; /*opacity proportional to the size*/
+      animation: moveclouds 18s linear infinite;
+    }
+
+    &.x5 {
+      top: 35px;
+      transform: scale(0.2);
+      opacity: 0.8; /*opacity proportional to the size*/
+      animation: moveclouds 20s linear infinite;
+    }
+    @keyframes moveclouds {
+      0% {left: -200px;}
+      100% {margin-left: 100%;}
+    }
+  }

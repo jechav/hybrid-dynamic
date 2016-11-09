@@ -24,7 +24,7 @@
    */
   let sun = $('#sun');
   let btn_sun = $('#btn-sun');
-  let clouds = $('.cloud')
+  let clouds = $('.back-top')
   let panel = $('#panel');
   let regulator = $('#regulator');
   let btn_regulator = $('#btn_regulator');
@@ -298,12 +298,16 @@
 
           if(USE_APPLIANCE_SUM > sun_val){
             if(USE_APPLIANCE_SUM > sun_val + BATTER_VOL){
-              l_battery.animateLine('animate-line reverse')
+              l_battery.animateLine('animate-line reverse x3')
               l_electrical.animateLine('animate-line')
               g_updateBatter('uncharging')
             }else{
-              l_battery.animateLine('animate-line reverse')
-              g_updateBatter('uncharging')
+              if( (USE_APPLIANCE_SUM - sun_val) <= 500) {
+                g_updateBatter('both')
+              }else{
+                g_updateBatter('uncharging')
+              }
+              l_battery.animateLine('animate-line reverse x3')
             }
           }else if( USE_APPLIANCE_SUM == sun_val ){
             g_updateBatter(' ')
@@ -368,9 +372,6 @@
   /*
    *HELPERS
    */
-  const hide = function(ele){
-    ele.css({ display: 'none' })
-  }
   const debounce = function(method, delay) {
     clearTimeout(method._tId);
     method._tId = setTimeout(() => {

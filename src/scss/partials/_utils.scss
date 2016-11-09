@@ -109,3 +109,8 @@
 .relative {
   position: relative;
 }
+@mixin mobile_and_landscape{
+  @media (max-width: 641px), (orientation:landscape) and (max-width: 767px){
+    @content;
+  }
+}
