@@ -12,10 +12,19 @@
     'air': {state: false, val: 3500},
     'wash': {state: false, val: 1200},
     'cleaner': {state: false, val: 1000},
-    'tv': {state: false, val: 300}
+    'tv': {state: false, val: 300},
+
+    'pool': {state: false, val: 2000, sec: true},
+    'jacuzzi': {state: false, val: 3000, sec: true},
+    'air2': {state: false, val: 1500, sec: true},
+    'bomb': {state: false, val: 1500, sec: true}
   }; 
+
   let USE_APPLIANCE = 0; //%
   let USE_APPLIANCE_SUM = 0; //sum 
+
+  let USE_APPLIANCE2 = 0; //%
+  let USE_APPLIANCE_SUM2 = 0; //sum 
 
   let BATTER_VOL = 1500;
 
@@ -37,7 +46,10 @@
   let l_regulator = $('#line-regulator');
   let l_electrical = $('#line-electrical');
   let l_battery = $('#line-battery');
+
   let l_off = $('#line-off');
+  let l_appl_1 = $('#line-appl-1');
+  let l_appl_2 = $('#line-appl-2');
 
   /*
    *MAIN FUNCTION
@@ -58,6 +70,7 @@
     $.each(STATE_APPL, (key, val) => {
       $('#btn_'+key).on('click', () => { toggleAppl(key) })
     })
+    //re-render lines on window resize
     $(window).on("resize", () =>  debounce(renderLines, 200) );
   }
   const animations = () => {
@@ -94,15 +107,27 @@
 
     //V_LINE BATTERY
     top = t_top;
-    left = v_left+4;
+    left = v_left+2;
     width = battery.offset().left - left;
     _updateLine(l_battery, top, left, width)
 
     //V_LINE APPLIANCES or OFF
-    top = t_top;
+    top = t_top+2;
     left = v_left;
-    height = appliances.offset().top - top;
+    height = appliances.offset().top + appliances.height()/2 - top + 2;
     _updateLine(l_off, top, left, null, height)
+
+    //V_LINE APPL 1  
+    top = appliances.offset().top + appliances.height()/2;
+    left = appliances.offset().left + appliances.width()+2;
+    width = v_left - appliances.offset().left - appliances.width();
+    _updateLine(l_appl_1, top, left, width, null)
+    
+    //V_LINE APPL 2  
+    top = appliances.offset().top + appliances.height()/2;
+    left = v_left+2;
+    width = v_left - appliances.offset().left - appliances.width() + 6;
+    _updateLine(l_appl_2, top, left, width, null)
   }
   const _updateLine = function(ele, top, left, width, height) {
     ele.css({
@@ -135,6 +160,7 @@
     $('#info-sun').html(STATE_SUN).animateCss('fadeIn');;
     $('#info-panel').text(`${STATE_SUN * 1000}W`).animateCss('bounceIn');
 
+    //sky clouds effect
     if(STATE_SUN == 1){
       clouds.removeClass('night')
     } else if (STATE_SUN == 0) {
@@ -142,6 +168,7 @@
     }
   }
   function g_updateLinePanelRegualtor(){
+    //reset animation on lines
     l_panel.removeClass('animate-line x2 x3')
     l_regulator.removeClass('animate-line-v x2 x3')
 
@@ -151,6 +178,7 @@
       l_panel.addClass('animate-line')
       l_regulator.addClass('animate-line-v')
     }
+    //add speed class
     if(STATE_SUN == 2 || STATE_SUN == 3){
       l_panel.addClass(`x${STATE_SUN}`)
       l_regulator.addClass(`x${STATE_SUN}`)
@@ -225,9 +253,10 @@
     calcAppliancesUse()
   }
   function calcAppliancesUse(){
+    //fist block
     let sum = 0, total = 6000;
     $.each(STATE_APPL, (key, val) => {
-      if(val.state) { sum+=val.val }
+      if(!val.sec && val.state) { sum+=val.val }
     })
 
     USE_APPLIANCE_SUM =  sum;
@@ -238,7 +267,23 @@
 
     $('.blocks span').removeClass('on'); //clean
     for(let i = 0; i < parseInt(tm); i++){
-      $('.block-'+i).addClass('on');
+      $('.blocks .block-'+i).addClass('on');
+    }
+    //second block
+    sum = 0, total = 8000;
+    $.each(STATE_APPL, (key, val) => {
+      if(val.sec && val.state) { sum+=val.val }
+    })
+
+    USE_APPLIANCE_SUM2 =  sum;
+    USE_APPLIANCE2 =  sum*100/total;
+
+    tm = USE_APPLIANCE2/10;
+    if(tm < 1 && tm > 0) tm = tm=1;
+
+    $('.blocks2 span').removeClass('on'); //clean
+    for(let i = 0; i < parseInt(tm); i++){
+      $('.blocks2 .block-'+i).addClass('on');
     }
   }
 
@@ -247,6 +292,9 @@
     l_off.animateLine('')
     l_electrical.animateLine('')
     l_battery.animateLine('')
+    l_appl_1.animateLine('')
+    l_appl_2.animateLine('')
+
     if (TIMER) clearTimeout(TIMER)
 
     let sun_val = STATE_SUN * 1000;
@@ -255,6 +303,8 @@
       if(STATE_BAT != 'b_off'){ 
         if(USE_APPLIANCE > 0){ //accesories with regulator off and battery on
           l_off.animateLine( `animate-line-v ${getAppliencesSpeed(USE_APPLIANCE_SUM)}` )
+          l_appl_1.animateLine( `animate-line-v ${getAppliencesSpeed(USE_APPLIANCE_SUM)}` )
+
           g_updateBatter('uncharging');
 
           if(USE_APPLIANCE_SUM <= BATTER_VOL){
@@ -279,65 +329,68 @@
         }else{
           g_updateBatter(' ');
         }
+        if( USE_APPLIANCE2 > 0 ){
+          l_appl_2.animateLine( `animate-line ${getAppliencesSpeed(USE_APPLIANCE_SUM2 + USE_APPLIANCE_SUM)}` )
+          l_off.animateLine( `animate-line-v ${getAppliencesSpeed(USE_APPLIANCE_SUM2 + USE_APPLIANCE_SUM)}` )
+          l_battery.animateLine(`animate-line reverse`)
+
+          g_updateBatter('uncharging');
+          if( USE_APPLIANCE_SUM + USE_APPLIANCE_SUM2 > BATTER_VOL ){
+            l_electrical.animateLine( `animate-line ${getAppliencesSpeed(USE_APPLIANCE_SUM2 + USE_APPLIANCE_SUM)}` );
+          }
+        }
       }else{
         if(USE_APPLIANCE > 0){ //accesories with regulator off and battery off
           l_off.animateLine( `animate-line-v ${getAppliencesSpeed(USE_APPLIANCE_SUM)}` )
-          l_electrical.animateLine('animate-line')
-          if(USE_APPLIANCE_SUM <= 1000){
-          }else if(USE_APPLIANCE_SUM <= 1500){
-            l_electrical.addClass('x2');
-          }else{
-            l_electrical.addClass('x3');
-          }
+          l_appl_1.animateLine( `animate-line-v ${getAppliencesSpeed(USE_APPLIANCE_SUM)}` )
+          l_electrical.animateLine( `animate-line ${getAppliencesSpeed(USE_APPLIANCE_SUM)}` );
         }
+        if( USE_APPLIANCE2 > 0 ){
+          l_appl_2.animateLine( `animate-line ${getAppliencesSpeed(USE_APPLIANCE_SUM2)}` )
+          l_off.animateLine( `animate-line-v ${getAppliencesSpeed(USE_APPLIANCE_SUM2 + USE_APPLIANCE_SUM)}` )
+          l_electrical.animateLine( `animate-line ${getAppliencesSpeed(USE_APPLIANCE_SUM2 + USE_APPLIANCE_SUM)}` );
+        }
+
       }
     }else{
       if(STATE_BAT != 'b_off'){
         if(USE_APPLIANCE > 0){ //accesories with regulator on, battery on
           l_off.animateLine( `animate-line-v ${getAppliencesSpeed(USE_APPLIANCE_SUM)}` );
+          l_appl_1.animateLine( `animate-line-v ${getAppliencesSpeed(USE_APPLIANCE_SUM)}` )
 
-          if(USE_APPLIANCE_SUM > sun_val){
-            if(USE_APPLIANCE_SUM > sun_val + BATTER_VOL){
-              l_battery.animateLine('animate-line reverse x3')
-              l_electrical.animateLine('animate-line')
-              g_updateBatter('uncharging')
-            }else{
-              if( (USE_APPLIANCE_SUM - sun_val) <= 500) {
-                g_updateBatter('both')
-              }else{
-                g_updateBatter('uncharging')
-              }
-              l_battery.animateLine('animate-line reverse x3')
-            }
-          }else if( USE_APPLIANCE_SUM == sun_val ){
-            g_updateBatter(' ')
-          }else {
+          batOnPanelOn(USE_APPLIANCE_SUM, sun_val); //function below same reusable for appliance 2 
+
+          if(USE_APPLIANCE2 > 0){ //set appliances1 and appliances2 on //PICHERO
+
+            l_off.animateLine( `animate-line-v ${getAppliencesSpeed(USE_APPLIANCE_SUM+USE_APPLIANCE_SUM2)}` );
+            l_appl_2.animateLine( `animate-line ${getAppliencesSpeed(USE_APPLIANCE_SUM2)}` )
+
+            if (TIMER) clearTimeout(TIMER)
+            batOnPanelOn(USE_APPLIANCE_SUM + USE_APPLIANCE_SUM2, sun_val); //function below same reusable for appliance 2 
+          }
+        }else{
+          if(USE_APPLIANCE2 > 0){ //app1 off app2 on
+            l_off.animateLine( `animate-line-v ${getAppliencesSpeed(USE_APPLIANCE_SUM2)}` );
+            l_appl_2.animateLine( `animate-line ${getAppliencesSpeed(USE_APPLIANCE_SUM2)}` )
+
+            batOnPanelOn(USE_APPLIANCE_SUM2, sun_val); //function below same reusable for appliance 1 above 
+
+          }else { //both appliances off 
             //if sun > 1 charge electrical and battery both
-            console.log(getDiference((sun_val + BATTER_VOL), USE_APPLIANCE_SUM, true));
-            if( getDiference((sun_val + BATTER_VOL), USE_APPLIANCE_SUM, true) <= 2500 ){ 
+            if(STATE_SUN > 1){ 
               chargeBattery()
-              feedElectrical('2');
+              feedElectrical();
             }else{
               chargeBattery(() => {
-                feedElectrical('2');
+                feedElectrical();
               })
             }
           }
-        }else{
-          //if sun > 1 charge electrical and battery both
-          if(STATE_SUN > 1){ 
-            chargeBattery()
-            feedElectrical();
-          }else{
-            chargeBattery(() => {
-              feedElectrical();
-            })
-          }
         }
       }else{
-
         if(USE_APPLIANCE > 0){ //accesories with regulator on, batery off
           l_off.animateLine( `animate-line-v ${getAppliencesSpeed(USE_APPLIANCE_SUM)}` );
+          l_appl_1.animateLine( `animate-line-v ${getAppliencesSpeed(USE_APPLIANCE_SUM)}` )
 
           if(USE_APPLIANCE_SUM > sun_val) {
             l_electrical.animateLine( `animate-line ${getDiference(USE_APPLIANCE_SUM, sun_val)}` );
@@ -346,8 +399,33 @@
           } else {
             l_electrical.animateLine('animate-line reverse');
           }
+
+          if( USE_APPLIANCE2 > 0){ //both appliance 1 and 2 on
+            l_appl_2.animateLine( `animate-line ${getAppliencesSpeed(USE_APPLIANCE_SUM)}` )
+            l_off.animateLine( `animate-line-v ${getAppliencesSpeed(USE_APPLIANCE_SUM2 + USE_APPLIANCE_SUM)}` );
+            if( ( sun_val - USE_APPLIANCE_SUM - USE_APPLIANCE_SUM2 ) > 0 ){
+              l_electrical.animateLine('animate-line reverse');
+            }else {
+              l_electrical.animateLine( `animate-line 
+                      ${getDiference(USE_APPLIANCE_SUM2 + USE_APPLIANCE_SUM, sun_val)}` );
+            }
+
+          }
         }else{
-          l_electrical.animateLine('animate-line reverse');
+          if( USE_APPLIANCE2 > 0){ //just appliance 1 on
+            l_off.animateLine( `animate-line-v ${getAppliencesSpeed(USE_APPLIANCE_SUM2)}` );
+            l_appl_2.animateLine( `animate-line ${getAppliencesSpeed(USE_APPLIANCE_SUM2)}` )
+
+            if(USE_APPLIANCE_SUM2 > sun_val) {
+              l_electrical.animateLine( `animate-line ${getDiference(USE_APPLIANCE_SUM2, sun_val)}` );
+            }else if( USE_APPLIANCE_SUM2 == sun_val) {
+              l_electrical.animateLine('');
+            } else {
+              l_electrical.animateLine('animate-line reverse');
+            }
+          }else { // set appliance 1 and 2 off
+            l_electrical.animateLine('animate-line reverse');
+          }
         }
       }
     }
@@ -366,6 +444,35 @@
     if(val < 2500) return '';
     if(val <= 4500) return ' x2';
     return ' x3'
+  }
+  function batOnPanelOn(useAppS, sun_val){
+    if(useAppS > sun_val){
+      if(useAppS > (sun_val + BATTER_VOL)){
+        l_battery.animateLine('animate-line reverse x3')
+        l_electrical.animateLine('animate-line')
+        g_updateBatter('uncharging')
+      }else{
+        if( (useAppS - sun_val) <= 500) {
+          g_updateBatter('both')
+        }else{
+          g_updateBatter('uncharging')
+        }
+        l_battery.animateLine('animate-line reverse x3')
+      }
+    }else if( useAppS == sun_val ){
+      g_updateBatter(' ')
+    }else {
+      //if sun > 1 charge electrical and battery both
+      console.log(getDiference((sun_val + BATTER_VOL), useAppS, true));
+      if( getDiference((sun_val + BATTER_VOL), useAppS, true) <= 2500 ){ 
+        chargeBattery()
+        feedElectrical('2');
+      }else{
+        chargeBattery(() => {
+          feedElectrical('2');
+        })
+      }
+    }
   }
   
 

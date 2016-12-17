@@ -21,7 +21,10 @@
 
     <div class="line" id="line-electrical"></div>
     <div class="line" id="line-battery"></div>
+
     <div class="line" id="line-off"></div>
+    <div class="line" id="line-appl-1"></div>
+    <div class="line" id="line-appl-2"></div>
 
     <div class="back-top">
      	<div class="cloud x1"></div>
@@ -42,11 +45,11 @@
         <span id="how">How Hybrid Works? <br> Just Click Below</span>
       </div>
       <div class="body">
-        <div class="panel">
+        <div class="panel" title="Solar Panel">
           <img src="/assets/img/Solar-power.png" alt="" id="panel" ><br>
-          <p class="info" id="info-panel">100W</p>
+          <p class="info" id="info-panel">1000W</p>
         </div>
-        <div class="regulator">
+        <div class="regulator" title="Electric inverter">
           <div class="relative">
             <button type="button" class="btn" id="btn_regulator">
               <img src="/assets/img/regulator.png" alt="" id="regulator">
@@ -65,10 +68,10 @@
       </div>
       <div class="bot">
         <div class="energy">
-          <div class="electrical-container">
+          <div class="electrical-container" title="Electrical Source">
             <img src="/assets/img/electric-tower_2.png" alt="" id="electrical">
           </div>
-          <div class="battery-container">
+          <div class="battery-container" title="Battery">
             <button type="button" class="btn" id="btn_battery">
               <div id="battery" class="b_on">
                 <div class="b_top"></div>
@@ -78,48 +81,104 @@
             <span class="info">1500W</span>
           </div>
         </div>
-        <div class="appliances">
-          <div id="indicator_power">
-            <div class="nums">
-              <span>0%</span>
-              <span style="float: right">100%</span>
+        <div class="row">
+          <!--
+             -BLOCK 1 Appliences
+             -->
+          <div class="appliances appliances1">
+            <div id="indicator_power">
+              <div class="nums">
+                <span>0%</span>
+                <span style="float: right">100%</span>
+              </div>
+              <div class="blocks">
+                <span class="block-0"></span>
+                <span class="block-1"></span>
+                <span class="block-2"></span>
+                <span class="block-3"></span>
+                <span class="block-4"></span>
+                <span class="block-5"></span>
+                <span class="block-6"></span>
+                <span class="block-7"></span>
+                <span class="block-8"></span>
+                <span class="block-9"></span>
+              </div>
             </div>
-            <div class="blocks">
-              <span class="block-0"></span>
-              <span class="block-1"></span>
-              <span class="block-2"></span>
-              <span class="block-3"></span>
-              <span class="block-4"></span>
-              <span class="block-5"></span>
-              <span class="block-6"></span>
-              <span class="block-7"></span>
-              <span class="block-8"></span>
-              <span class="block-9"></span>
+            <div class="label l1">
+              <span class="info">Priority load</span>
+            </div>
+            <div class="appliance" title="Air Conditioner">
+              <button class="btn" type="button" id="btn_air">
+                <img src="/assets/img/e4_1.png" alt="" id="air">
+              </button>
+              <span class="info">3500W</span>
+            </div>
+            <div class="appliance" title="Wash Machine">
+              <button class="btn" type="button" id="btn_wash">
+                <img src="/assets/img/e3_1.png" alt="" id="wash">
+              </button>
+              <span class="info">1200W</span>
+            </div>
+            <div class="appliance" title="Cleaner">
+              <button class="btn" type="button" id="btn_cleaner">
+                <img src="/assets/img/e2_1.png" alt="" id="cleaner">
+              </button>
+              <span class="info">1000W</span>
+            </div>
+            <div class="appliance" title="TV">
+              <button class="btn" type="button" id="btn_tv">
+                <img src="/assets/img/e1_1.png" alt="" id="tv">
+              </button>
+              <span class="info">300W</span>
             </div>
           </div>
-          <div class="appliance">
-            <button class="btn" type="button" id="btn_air">
-              <img src="/assets/img/e4_2.png" alt="" id="air">
-            </button>
-            <span class="info">3500W</span>
-          </div>
-          <div class="appliance">
-            <button class="btn" type="button" id="btn_wash">
-              <img src="/assets/img/e3_2.png" alt="" id="wash">
-            </button>
-            <span class="info">1200W</span>
-          </div>
-          <div class="appliance">
-            <button class="btn" type="button" id="btn_cleaner">
-              <img src="/assets/img/e2_2.png" alt="" id="cleaner">
-            </button>
-            <span class="info">1000W</span>
-          </div>
-          <div class="appliance">
-            <button class="btn" type="button" id="btn_tv">
-              <img src="/assets/img/e1_2.png" alt="" id="tv">
-            </button>
-            <span class="info">300W</span>
+
+          <!--
+          -BLOCK 2 Appliences
+          -->
+          <div class="appliances appliances2">
+            <div id="indicator_power" style="left: initial; right: 7px;">
+              <div class="nums">
+                <span>0%</span>
+                <span style="float: right">100%</span>
+              </div>
+              <div class="blocks2">
+                <span class="block-0"></span>
+                <span class="block-1"></span>
+                <span class="block-2"></span>
+                <span class="block-3"></span>
+                <span class="block-4"></span>
+                <span class="block-5"></span>
+                <span class="block-6"></span>
+                <span class="block-7"></span>
+                <span class="block-8"></span>
+                <span class="block-9"></span>
+              </div>
+            </div>
+            <div class="appliance" title="Pool">
+              <button class="btn" type="button" id="btn_pool">
+                <img src="/assets/img/e4_2.png" alt="" id="air">
+              </button>
+              <span class="info">2000W</span>
+            </div>
+            <div class="appliance" title="Jacuzzi">
+              <button class="btn" type="button" id="btn_jacuzzi">
+                <img src="/assets/img/e3_2.png" alt="" id="wash">
+              </button>
+              <span class="info">3000W</span>
+            </div>
+            <div class="appliance" title="Air Conditioner">
+              <button class="btn" type="button" id="btn_air2">
+                <img src="/assets/img/e2_2.png" alt="" id="cleaner">
+              </button>
+              <span class="info">1500W</span>
+            </div>
+            <div class="appliance" title="Submersible pump">
+              <button class="btn" type="button" id="btn_bomb">
+                <img src="/assets/img/e1_2.png" alt="" id="tv">
+              </button>
+              <span class="info">1500W</span>
+            </div>
           </div>
         </div>
       </div>

@@ -25,6 +25,34 @@ html, body{
       background: linear-gradient(to bottom, #5e6f7c 0%, #fff 100%);
     }
   }
+  #canvas {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+
+    width: 90%;
+    height: 90%;
+    max-width: 900px;
+    max-height: 600px;
+    @media screen and (orientation:landscape) and (max-width: 767px) { 
+      height: initial;
+      max-height: initial;
+      .top {
+        margin-top: 240px;
+      }
+    }
+    @media screen and (max-width: 400px){
+      height: initial;
+      max-height: initial;
+      .top {
+        margin-top: 240px;
+      }
+    }
+    @media screen and (max-width: 768px){
+      height: initial;
+      max-height: initial;
+    }
+  }
 }
 .top{
   position: relative;
@@ -131,7 +159,7 @@ html, body{
 }
 .bot {
   .energy {
-    padding-bottom: 30px;
+    padding-bottom: 48px;
     @media(min-height: 500px){
       padding-bottom: 60px;
     }
@@ -156,6 +184,11 @@ html, body{
       justify-content: space-around;
     }
   }
+  .row {
+    display: flex;
+    justify-content: space-between;
+
+  }
   .appliances{
     display: flex;
     justify-content: space-around;
@@ -165,21 +198,24 @@ html, body{
     border: 1px solid;
     border-radius: 10px;
     position: relative;
-    max-width: 600px;
-    margin: 0 auto;
+    background: white;
     img {
-      width: 70px;
-      height: 70px;
+      width: 55px;
+      height: 55px;
       @include mobile_and_landscape {
-        width: 50px;
-        height: 50px;
+        width: 45px;
+        height: 45px;
       }
+    }
+    @media(max-width: 900px){
+      flex: 0.4;
     }
     .appliance{
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
+      margin: 0 5px;
       .btn {
         padding-bottom: 2px;
         border-bottom: 5px solid $green;
@@ -209,7 +245,7 @@ html, body{
           font-size: 9px;
         }
       }
-      .blocks {
+      .blocks, .blocks2 {
         span {
           display: inline-block;
           width: 9px;
@@ -223,6 +259,18 @@ html, body{
             background-color: $red;
           }
         }
+      }
+    }
+    .label {
+      position: absolute;
+      top: -25px;
+      &.l1 {
+        right: 0;
+      }
+      @include mobile_and_landscape {
+        top: -55px;
+        left: 0;
+        right: initial;
       }
     }
   }
@@ -389,22 +437,6 @@ html, body{
   }
 }
 
-#canvas {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-
-  width: 90%;
-  height: 90%;
-  max-width: 900px;
-  max-height: 600px;
-  @media screen and (orientation:landscape) and (max-width: 767px) { 
-    height: initial;
-    .top {
-      margin-top: 115px;
-    }
-  }
-}
 .line {
   position: absolute;
   background-color: black;
