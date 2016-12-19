@@ -21,5 +21,8 @@
     "gulp-sourcemaps": "^2.2.0",
     "gulp-uglify": "^2.0.0"
   },
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "gulp-open": "^2.0.0"
+  }
 }

@@ -8,6 +8,7 @@ var uglify = require('gulp-uglify');
 var rename = require('gulp-rename');
 var autoprefixer = require('gulp-autoprefixer');
 var babel = require('gulp-babel');
+var open = require('gulp-open');
 
 var paths = {
   sass: ['./src/**/**/*.scss' ],
@@ -104,4 +105,10 @@ gulp.task('serve', function() {
     livereload: true,
     fallback: 'public/index.html'
   });
+
+  gulp.src('public/index.html')
+    .pipe(open({
+      uri: 'http://localhost:3000',
+      app: process.platform=='linux'?'google-chrome':'google chrome'
+    }));
 });

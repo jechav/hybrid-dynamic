@@ -4,6 +4,7 @@
    */
   let STATE_SUN = 1; //1,2,3,0
   let STATE_REGU = true; //true, false
+  let STATE_ELECT = true; //true, false
   let STATE_BAT = 'b_on'; //b_on, b_ff, charging, uncharging, both 
 
   let TIMER = null;
@@ -38,6 +39,7 @@
   let regulator = $('#regulator');
   let btn_regulator = $('#btn_regulator');
   let electrical = $('#electrical');
+  let btn_electrical = $('#btn_electrical');
   let battery = $('#battery');
   let btn_battery = $('#btn_battery');
   let appliances = $('.appliances')
@@ -64,6 +66,7 @@
   const events = () => {
     btn_sun.on('click', incrementSun)
     btn_regulator.on('click', toggleRegulator)
+    btn_electrical.on('click', toggleElectrical)
     btn_battery.on('click', toggleBattery)
 
     //appliances
@@ -202,6 +205,18 @@
       regulator.addClass('off')
       $('#wifi').addClass('hide');
       $('#g_wifi').addClass('w_off');
+    }
+  }
+  //**** ELECTRICAL SOURCE ****//
+  function toggleElectrical(){
+    STATE_ELECT = !STATE_ELECT;
+    g_updateLinePanelRegualtor();
+
+    updateSystem();
+    if(STATE_ELECT){
+      btn_electrical.removeClass('off');
+    }else{
+      btn_electrical.addClass('off');
     }
   }
   //**** BATTERY ****//
